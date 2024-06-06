@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: categories-depl
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: categories
+  template:
+    metadata: 
+      labels:
+        app: categories
+    spec: 
+      containers:
+        - name: categories
+          image: ayyub2976/categories
+          env: 
+            - name: NATS_CLUSTER_ID
+              value: blog-app
+            - name: NATS_CLIENT_ID
+              valueFrom: 
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: MONGO_URI
+              value: 'mongodb://categories-mongo-srv:27017/categories'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: categories-srv
+spec: 
+  selector:
+    app: categories
+  ports:
+    - name: categories
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
