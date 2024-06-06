@@ -3,7 +3,7 @@ name: tests-posts
 on: 
   pull_request:
     paths: 
-      - 'auth/**'
+      - 'posts/**'
 jobs: 
   build: 
     runs-on: ubuntu-latest

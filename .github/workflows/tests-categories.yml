@@ -3,7 +3,7 @@ name: tests-categories
 on: 
   pull_request:
     paths: 
-      - 'auth/**'
+      - 'categories/**'
 
 jobs: 
   build: 
